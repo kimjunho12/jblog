@@ -27,8 +27,16 @@ public class BlogService {
 		return blogRepository.findAllPost(blogId);
 	}
 
+	public PostVo getPost(Long postNo) {
+		return blogRepository.findPost(postNo);
+	}
+
 	public PostVo getRecentPost(String blogId) {
 		return blogRepository.findRecentPost(blogId);
+	}
+
+	public PostVo getRecentPost(String blogId, Long categoryNo) {
+		return blogRepository.findRecentPost(blogId, categoryNo);
 	}
 
 	public boolean createBlog(String userId) {

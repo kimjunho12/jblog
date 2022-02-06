@@ -31,7 +31,7 @@
 		resultType="postvo">
 	<![CDATA[
 		SELECT 
-		    p.no, p.title, p.reg_date regDate
+		    p.no, p.title, p.reg_date regDate, p.category_no categoryNo
 		FROM
 		    category c
 		        JOIN
@@ -42,6 +42,18 @@
 	]]>
 	</select>
 
+	<select id="findPost" parameterType="long"
+		resultType="postvo">
+	<![CDATA[
+		SELECT 
+		    p.no, p.title, p.content
+		FROM
+		    post p
+		WHERE
+		    p.no = #{postNo }
+	]]>
+	</select>
+	
 	<select id="findRecentPost" parameterType="string"
 		resultType="postvo">
 	<![CDATA[
@@ -53,6 +65,22 @@
 		    post p ON c.no = p.category_no
 		WHERE
 		    c.blog_id = #{blogId }
+		ORDER BY p.reg_date DESC
+		LIMIT 1
+	]]>
+	</select>
+
+	<select id="findCategoryRecentPost" parameterType="map"
+		resultType="postvo">
+	<![CDATA[
+		SELECT 
+		    p.no, p.title, p.content
+		FROM
+		    category c
+		        JOIN
+		    post p ON c.no = p.category_no
+		WHERE
+		    c.blog_id = #{blogId } AND p.category_no =#{categoryNo }
 		ORDER BY p.reg_date DESC
 		LIMIT 1
 	]]>
@@ -80,7 +108,7 @@
 		resultType="postvo">
 	<![CDATA[
 		SELECT 
-		    p.no, p.title, p.reg_date regDate
+		    p.no, p.title, p.reg_date regDate, p.category_no categoryNo
 		FROM
 		    category c
 		        JOIN

@@ -26,11 +26,40 @@ public class BlogController {
 		if (blogService.getBlog(blogId) == null) {
 			return "redirect:/";
 		}
-		model.addAttribute("categoryList", blogService.getCategoryList(blogId));
+		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
+		model.addAttribute("categoryList", blogService.getCategoryList(blogId));	// 얘도 이동해야할듯
 		model.addAttribute("postList", blogService.getAllPostList(blogId));
 		model.addAttribute("post", blogService.getRecentPost(blogId));
 		model.addAttribute("blogId", blogId);
+		return "blog/blog-main";
+	}
+	
+	@RequestMapping(value = "/{blogId}/{categoryNo}")
+	public String blogMain(
+			@PathVariable("blogId") String blogId,
+			@PathVariable("categoryNo") Long categoryNo,
+			Model model) {
 		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
+		model.addAttribute("categoryList", blogService.getCategoryList(blogId));	// 얘도 이동해야할듯
+		model.addAttribute("postList", blogService.getCategoryPostList(blogId, categoryNo));
+		model.addAttribute("post", blogService.getRecentPost(blogId, categoryNo));
+		model.addAttribute("blogId", blogId);
+		
+		return "blog/blog-main";
+	}
+	
+	@RequestMapping(value = "/{blogId}/{categoryNo}/{postNo}")
+	public String blogMain(
+			@PathVariable("blogId") String blogId,
+			@PathVariable("categoryNo") Long categoryNo,
+			@PathVariable("postNo") Long postNo,
+			Model model) {
+		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
+		model.addAttribute("categoryList", blogService.getCategoryList(blogId));	// 얘도 이동해야할듯
+		model.addAttribute("postList", blogService.getCategoryPostList(blogId, categoryNo));
+		model.addAttribute("post", blogService.getPost(postNo));
+		model.addAttribute("blogId", blogId);
+		
 		return "blog/blog-main";
 	}
 
