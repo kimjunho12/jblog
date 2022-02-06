@@ -2,6 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="blog">	<!-- 구별을 위한 id상위(prefix) 개념 -->
+
+	<select id="findBlog" parameterType="string" resultType="blogvo">
+	<![CDATA[
+		SELECT 
+		    title, logo, user_id userId
+		FROM
+		    blog
+		WHERE
+		    user_id = #{blogId }
+	]]>
+	</select>
+
+
 	<select id="findCategory" parameterType="string"
 		resultType="categoryvo">
 	<![CDATA[	
@@ -10,7 +23,7 @@
 		FROM
     		category
 		WHERE
-    		blog_id = #{uid }
+    		blog_id = #{blogId }
 	]]>
 	</select>
 
@@ -24,7 +37,7 @@
 		        JOIN
 		    post p ON c.no = p.category_no
 		WHERE
-		    c.blog_id = #{uid }
+		    c.blog_id = #{blogId }
 	]]>
 	</select>
 
@@ -38,26 +51,62 @@
 		        JOIN
 		    post p ON c.no = p.category_no
 		WHERE
-		    c.blog_id = #{uid }
+		    c.blog_id = #{blogId }
 		ORDER BY p.reg_date
 		LIMIT 1
 	]]>
 	</select>
-	
+
 	<insert id="insertBlog" parameterType="string">
 	<![CDATA[
 		INSERT INTO blog VALUES('${_parameter } 님의 블로그', '/images/spring-logo.jpg', #{userId })
 	]]>
 	</insert>
-	
+
 	<insert id="insertDefaultCategory" parameterType="string">
 	<![CDATA[
 		INSERT INTO category VALUES(null, '미분류', '기본 카테고리', #{userId })
 	]]>
 	</insert>
-	
-	
-	
+
+	<insert id="insertCategory" parameterType="categoryvo">
+	<![CDATA[
+		INSERT INTO category VALUES(null, #{name }, #{description }, #{blogId })
+	]]>
+	</insert>
+
+	<select id="findCategoryPostList" parameterType="map"
+		resultType="postvo">
+	<![CDATA[
+		SELECT 
+		    p.no, p.title, p.reg_date regDate
+		FROM
+		    category c
+		        JOIN
+		    post p ON c.no = p.category_no
+		WHERE
+		    c.blog_id = #{blogId } AND p.category_no =#{categoryNo }
+	]]>
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	<select id="findByNo" parameterType="long" resultType="uservo">
 	<![CDATA[
