@@ -52,4 +52,8 @@ public class BlogRepository {
 		return sqlSession.selectList("blog.findCategoryPostList", param);
 	}
 
+	public int insertPost(PostVo postVo) {
+		return sqlSession.insert("blog.insertPost", postVo);
+	}
+
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.poscoict.jblog.service.BlogService;
 import com.poscoict.jblog.vo.CategoryVo;
+import com.poscoict.jblog.vo.PostVo;
 
 @Controller
 public class BlogController {
@@ -59,7 +60,7 @@ public class BlogController {
 	@RequestMapping(value = "/{blogId}/admin/category/add", method = RequestMethod.POST)
 	public String blogCategoryAdd(@PathVariable("blogId") String blogId, CategoryVo categoryVo) {
 		categoryVo.setBlogId(blogId);
-		if (blogService.insertCategory(categoryVo)) {
+		if (blogService.addCategory(categoryVo)) {
 
 		}
 
@@ -72,6 +73,15 @@ public class BlogController {
 		model.addAttribute("categoryList", blogService.getCategoryList(blogId));
 
 		return "blog/blog-admin-write";
+	}
+
+	@RequestMapping(value = "/{blogId}/admin/write", method = RequestMethod.POST)
+	public String blogWrite(@PathVariable("blogId") String blogId, PostVo postVo) {
+		if (blogService.writePost(postVo)) {
+			
+		}
+		return "redirect:/" + blogId;
+
 	}
 
 }

@@ -38,6 +38,7 @@
 		    post p ON c.no = p.category_no
 		WHERE
 		    c.blog_id = #{blogId }
+		ORDER BY p.reg_date DESC
 	]]>
 	</select>
 
@@ -52,7 +53,7 @@
 		    post p ON c.no = p.category_no
 		WHERE
 		    c.blog_id = #{blogId }
-		ORDER BY p.reg_date
+		ORDER BY p.reg_date DESC
 		LIMIT 1
 	]]>
 	</select>
@@ -86,8 +87,15 @@
 		    post p ON c.no = p.category_no
 		WHERE
 		    c.blog_id = #{blogId } AND p.category_no =#{categoryNo }
+		ORDER BY p.reg_date DESC
 	]]>
 	</select>
+
+	<insert id="insertPost" parameterType="categoryvo">
+	<![CDATA[
+		INSERT INTO post VALUES(null, #{title }, #{content }, now(), #{categoryNo })
+	]]>
+	</insert>
 
 
 

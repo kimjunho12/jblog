@@ -39,12 +39,16 @@ public class BlogService {
 		return 1 == blogRepository.insertDefaultCategory(userId);
 	}
 
-	public boolean insertCategory(CategoryVo categoryVo) {
+	public boolean addCategory(CategoryVo categoryVo) {
 		return 1 == blogRepository.insertCategory(categoryVo);
 	}
 
 	public List<PostVo> getCategoryPostList(String blogId, Long categoryNo) {
 		return blogRepository.findCategoryPostList(blogId, categoryNo);
+	}
+
+	public boolean writePost(PostVo postVo) {
+		return 1 == blogRepository.insertPost(postVo);
 	}
 
 }
