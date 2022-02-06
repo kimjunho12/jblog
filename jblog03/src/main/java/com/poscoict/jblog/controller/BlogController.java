@@ -1,15 +1,26 @@
 package com.poscoict.jblog.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.poscoict.jblog.service.BlogService;
+
 @Controller
 public class BlogController {
 
+	@Autowired
+	private BlogService blogService;
+
 	@RequestMapping(value = "/{userId}", method = RequestMethod.GET)
-	public String blogMain(@PathVariable("userId") String uid) {
+	public String blogMain(@PathVariable("userId") String uid, Model model) {
+		model.addAttribute("categoryList", blogService.getCategoryList(uid));
+		model.addAttribute("postList", blogService.getAllPostList(uid));
+		model.addAttribute("post", blogService.getRecentPost(uid));
+		model.addAttribute("uid", uid);
 		return "blog/blog-main";
 	}
 
@@ -27,5 +38,5 @@ public class BlogController {
 	public String blogWrite(@PathVariable("userId") String uid) {
 		return "blog/blog-admin-write";
 	}
-
+	
 }

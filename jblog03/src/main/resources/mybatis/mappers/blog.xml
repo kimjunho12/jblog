@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blog">	<!-- 구별을 위한 id상위(prefix) 개념 -->
+	<select id="findCategory" parameterType="string"
+		resultType="categoryvo">
+	<![CDATA[	
+		SELECT 
+    		no, name, description, blog_id blogId
+		FROM
+    		category
+		WHERE
+    		blog_id = #{uid }
+	]]>
+	</select>
+
+	<select id="findAllPost" parameterType="string"
+		resultType="postvo">
+	<![CDATA[
+		SELECT 
+		    p.no, p.title, p.reg_date regDate
+		FROM
+		    category c
+		        JOIN
+		    post p ON c.no = p.category_no
+		WHERE
+		    c.blog_id = #{uid }
+	]]>
+	</select>
+
+	<select id="findRecentPost" parameterType="string"
+		resultType="postvo">
+	<![CDATA[
+		SELECT 
+		    p.no, p.title, p.content
+		FROM
+		    category c
+		        JOIN
+		    post p ON c.no = p.category_no
+		WHERE
+		    c.blog_id = #{uid }
+		ORDER BY p.reg_date
+		LIMIT 1
+	]]>
+	</select>
+	
+	<insert id="insertBlog" parameterType="string">
+	<![CDATA[
+		INSERT INTO blog VALUES('${_parameter } 님의 블로그', '/images/spring-logo.jpg', #{userId })
+	]]>
+	</insert>
+	
+	<insert id="insertDefaultCategory" parameterType="string">
+	<![CDATA[
+		INSERT INTO category VALUES(null, '미분류', '기본 카테고리', #{userId })
+	]]>
+	</insert>
+	
+	
+	
+
+	<select id="findByNo" parameterType="long" resultType="uservo">
+	<![CDATA[
+		SELECT name, email, gender FROM user WHERE no=#{no }
+	]]>
+	</select>
+
+	<update id="update" parameterType="uservo">
+		<choose>
+			<!-- uservo의 field(password)를 통해 분기 -->
+			<when test="password == null or password == ''">
+			<![CDATA[	
+			UPDATE user SET name=#{name }, gender=#{gender } WHERE no=#{no }
+			]]>
+			</when>
+			<otherwise>
+			<![CDATA[
+			UPDATE user SET name=#{name }, gender=#{gender }, password=#{password } WHERE no=#{no }
+			]]>
+			</otherwise>
+		</choose>
+	</update>
+
+	<update id="update2" parameterType="uservo">
+			<![CDATA[	
+			UPDATE user
+				SET name=#{name }, gender=#{gender }
+			]]>
+		<if test="password == null or password == ''">
+			, password=#{password }
+		</if>			
+			<![CDATA[	
+			WHERE no=#{no }"
+			]]>
+	</update>
+</mapper>

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.poscoict.jblog.service.BlogService;
 import com.poscoict.jblog.service.UserService;
 import com.poscoict.jblog.vo.UserVo;
 
@@ -18,6 +19,9 @@ import com.poscoict.jblog.vo.UserVo;
 public class UserController {
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private BlogService blogService;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login() {
@@ -41,7 +45,8 @@ public class UserController {
 			return "user/join";
 		}
 		if (userService.join(userVo)) {
-			
+			blogService.createBlog(userVo.getId());
+			blogService.createDefaultCategory(userVo.getId());
 		}
 		return "redirect:/user/joinsuccess";
 	}
