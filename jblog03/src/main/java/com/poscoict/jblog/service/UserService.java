@@ -15,4 +15,8 @@ public class UserService {
 		return 1 == userRepository.insert(userVo);
 	}
 
+	public UserVo getUser(String id, String password) {
+		return userRepository.findByIdAndPassword(id, password);
+	}
+
 }

@@ -22,17 +22,17 @@
 		mapping="/images/**" />
 
 	<!-- Interceptor -->
-<!--<mvc:interceptors>                                                                       -->
-		<!-- Login Interceptor -->                                                           
-<!--	<mvc:interceptor>                                                                    -->
-<!--		<mvc:mapping path="/user/auth" />                                                -->
-<!--		<bean class="com.poscoict.jblog.security.LoginInterceptor" />                    -->
-<!--	</mvc:interceptor>                                                                   -->
+	<mvc:interceptors>                                                   
+		<!-- Login Interceptor -->                                       
+		<mvc:interceptor>                                                
+			<mvc:mapping path="/user/auth" />                            
+			<bean class="com.poscoict.jblog.security.LoginInterceptor" />
+		</mvc:interceptor>                                               
 	<!-- Logout Interceptor -->                                                          
-<!--	<mvc:interceptor>                                                                    -->
-<!--		<mvc:mapping path="/user/logout" />                                              -->
-<!--		<bean class="com.poscoict.jblog.security.LogoutInterceptor" />                   -->
-<!--	</mvc:interceptor>                                                                   -->
+		<mvc:interceptor>                                                  
+			<mvc:mapping path="/user/logout" />                            
+			<bean class="com.poscoict.jblog.security.LogoutInterceptor" /> 
+		</mvc:interceptor>                                                 
 <!-- Auth Interceptor -->                                                            
 <!--	<mvc:interceptor>                                                                    -->
 <!--		<mvc:mapping path="/**" />                                                       -->
@@ -46,7 +46,7 @@
 <!--		<mvc:mapping path="/**" />                                                       -->
 <!--		<bean class="com.poscoict.jblog.interceptor.SiteInterceptor" />                  -->
 <!--	</mvc:interceptor>                                                                   -->
-<!--</mvc:interceptors>                                                                      -->
+	</mvc:interceptors>
                                                                                            
 	<!-- ViewResolver -->
 	<bean id="viewResolver"

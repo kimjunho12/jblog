@@ -13,9 +13,12 @@
 <body>
 	<div class="center-content">
 		<c:import url="/WEB-INF/views/includes/menu.jsp" />
-		<form class="login-form">
-      		<label>아이디</label> <input type="text" name="id">
-      		<label>패스워드</label> <input type="text" name="password">
+		<form class="login-form" method="post" action="${pageContext.request.contextPath }/user/auth">
+      		<label>아이디</label> <input type="text" name="id" value="${id }">
+      		<label>패스워드</label> <input type="password" name="password">
+      		<c:if test="${result == 'fail'}">
+				<p style="color: red;">로그인이 실패 했습니다.</p>
+			</c:if>
       		<input type="submit" value="로그인">
 		</form>
 	</div>

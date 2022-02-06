@@ -8,45 +8,10 @@
 	]]>
 	</insert>
 	
-	<select id="findByEmailAndPassword" parameterType="map"
+	<select id="findByIdAndPassword" parameterType="map"
 		resultType="uservo">
 	<![CDATA[
-		SELECT no, name, role from user WHERE email=#{email } AND password=#{password }
+		SELECT id, name FROM user WHERE id=#{id } AND password=#{password }
 	]]>
 	</select>
-
-	<select id="findByNo" parameterType="long" resultType="uservo">
-	<![CDATA[
-		SELECT name, email, gender FROM user WHERE no=#{no }
-	]]>
-	</select>
-
-	<update id="update" parameterType="uservo">
-		<choose>
-			<!-- uservo의 field(password)를 통해 분기 -->
-			<when test="password == null or password == ''">
-			<![CDATA[	
-			UPDATE user SET name=#{name }, gender=#{gender } WHERE no=#{no }
-			]]>
-			</when>
-			<otherwise>
-			<![CDATA[
-			UPDATE user SET name=#{name }, gender=#{gender }, password=#{password } WHERE no=#{no }
-			]]>
-			</otherwise>
-		</choose>
-	</update>
-
-	<update id="update2" parameterType="uservo">
-			<![CDATA[	
-			UPDATE user
-				SET name=#{name }, gender=#{gender }
-			]]>
-		<if test="password == null or password == ''">
-			, password=#{password }
-		</if>			
-			<![CDATA[	
-			WHERE no=#{no }"
-			]]>
-	</update>
 </mapper>

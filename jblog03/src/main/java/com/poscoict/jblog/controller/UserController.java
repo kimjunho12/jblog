@@ -34,11 +34,6 @@ public class UserController {
 		return "user/joinsuccess";
 	}
 
-	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String logout() {
-		return "redirect:/";
-	}
-
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	public String join(@ModelAttribute @Valid UserVo userVo, BindingResult result, Model model) {
 		if (result.hasErrors()) {
