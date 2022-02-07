@@ -5,6 +5,6 @@
 	pageEncoding="UTF-8"%>
 <div id="footer">
 	<p>
-		<strong>블로그 타이틀 : ${blogVo.title }</strong> is powered by JBlog (c)2022
+		<strong>${blogVo.title }</strong> is powered by JBlog (c)2022
 	</p>
 </div>

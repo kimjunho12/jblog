@@ -6,7 +6,7 @@
 <div id="extra">
 	<div class="blog-logo">
 		<img
-			src="${pageContext.request.contextPath}/images/spring-logo.jpg">
+			src="${pageContext.request.contextPath}${blogVo.logo }">
 	</div>
 </div>
 
@@ -14,7 +14,7 @@
 	<h2>카테고리</h2>
 	<ul>
 	<c:forEach items="${categoryList }" var="category">
-		<li><a href="${pageContext.request.contextPath }/${uid }/${category.no }">${category.name }</a></li>
+		<li><a href="${pageContext.request.contextPath }/${blogId }/${category.no }">${category.name }</a></li>
 	</c:forEach>
 	</ul>
 </div>
