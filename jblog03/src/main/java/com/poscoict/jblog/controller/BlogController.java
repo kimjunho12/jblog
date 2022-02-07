@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.poscoict.jblog.security.Auth;
 import com.poscoict.jblog.service.BlogService;
 import com.poscoict.jblog.service.FileUploadService;
 import com.poscoict.jblog.vo.BlogVo;
@@ -58,6 +59,7 @@ public class BlogController {
 		return "blog/blog-main";
 	}
 
+	@Auth
 	@RequestMapping(value = { "/admin", "/admin/basic" }, method = RequestMethod.GET)
 	public String blogAdmin(@PathVariable("blogId") String blogId, Model model) {
 		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
@@ -65,6 +67,7 @@ public class BlogController {
 		return "blog/blog-admin-basic";
 	}
 	
+	@Auth
 	@RequestMapping(value = "/admin/basic/update", method = RequestMethod.POST)
 	public String blogAdmin(
 			@PathVariable("blogId") String blogId,
@@ -81,6 +84,7 @@ public class BlogController {
 		return "redirect:/" + blogId + "/admin/basic";
 	}
 
+	@Auth
 	@RequestMapping(value = "/admin/category", method = RequestMethod.GET)
 	public String blogCategory(@PathVariable("blogId") String blogId, Model model) {
 		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
@@ -97,6 +101,7 @@ public class BlogController {
 		return "blog/blog-admin-category";
 	}
 
+	@Auth
 	@RequestMapping(value = "/admin/category/add", method = RequestMethod.POST)
 	public String blogCategoryAdd(@PathVariable("blogId") String blogId, CategoryVo categoryVo) {
 		categoryVo.setBlogId(blogId);
@@ -107,6 +112,7 @@ public class BlogController {
 		return "redirect:/" + blogId + "/admin/category";
 	}
 	
+	@Auth
 	@RequestMapping(value = "/admin/category/delete/{categoryNo}", method = RequestMethod.GET)
 	public String blogCategoryDelete(@PathVariable("blogId") String blogId, @PathVariable("categoryNo") Long categoryNo) {
 		if (blogService.deleteCategory(categoryNo)) {
@@ -116,6 +122,7 @@ public class BlogController {
 		return "redirect:/" + blogId + "/admin/category";
 	}
 
+	@Auth
 	@RequestMapping(value = "/admin/write", method = RequestMethod.GET)
 	public String blogWrite(@PathVariable("blogId") String blogId, Model model) {
 		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
@@ -124,6 +131,7 @@ public class BlogController {
 		return "blog/blog-admin-write";
 	}
 
+	@Auth
 	@RequestMapping(value = "/admin/write", method = RequestMethod.POST)
 	public String blogWrite(@PathVariable("blogId") String blogId, PostVo postVo) {
 		if (blogService.writePost(postVo)) {
