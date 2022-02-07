@@ -29,9 +29,6 @@ public class BlogRepository {
 		return sqlSession.selectList("blog.findAllPost", blogId);
 	}
 
-	public PostVo findPost(Long postNo) {
-		return sqlSession.selectOne("blog.findPost", postNo);
-	}
 
 	public PostVo findRecentPost(String blogId) {
 		return sqlSession.selectOne("blog.findRecentPost", blogId);
@@ -42,6 +39,14 @@ public class BlogRepository {
 		param.put("blogId", blogId);
 		param.put("categoryNo", categoryNo);
 		return sqlSession.selectOne("blog.findCategoryRecentPost", param);
+	}
+	
+	public PostVo findPost(String blogId, Long categoryNo, Long postNo) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("blogId", blogId);
+		param.put("categoryNo", categoryNo);
+		param.put("postNo", postNo);
+		return sqlSession.selectOne("blog.findPost", param);
 	}
 
 	public int insertBlog(String userId) {

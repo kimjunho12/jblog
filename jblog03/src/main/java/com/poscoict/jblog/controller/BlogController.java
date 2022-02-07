@@ -3,6 +3,7 @@ package com.poscoict.jblog.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,61 +17,76 @@ import com.poscoict.jblog.vo.CategoryVo;
 import com.poscoict.jblog.vo.PostVo;
 
 @Controller
+@RequestMapping("/{blogId:(?!assets|images).*}")
 public class BlogController {
 
 	@Autowired
 	private BlogService blogService;
 
-	@RequestMapping(value = "/{blogId}", method = RequestMethod.GET)
-	public String blogMain(@PathVariable("blogId") String blogId, Model model) {
-		if (blogService.getBlog(blogId) == null) {
-			return "redirect:/";
-		}
-		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
-		model.addAttribute("categoryList", blogService.getCategoryList(blogId));	// 얘도 이동해야할듯
-		model.addAttribute("postList", blogService.getAllPostList(blogId));
-		model.addAttribute("post", blogService.getRecentPost(blogId));
-		model.addAttribute("blogId", blogId);
-		return "blog/blog-main";
-	}
+//	@RequestMapping(value = "", method = RequestMethod.GET)
+//	public String blogMain(@PathVariable("blogId") String blogId, Model model) {
+//		if (blogService.getBlog(blogId) == null) {
+//			return "redirect:/";
+//		}
+//		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
+//		model.addAttribute("categoryList", blogService.getCategoryList(blogId));	// 얘도 이동해야할듯
+//		model.addAttribute("postList", blogService.getAllPostList(blogId));
+//		model.addAttribute("post", blogService.getRecentPost(blogId));
+//		model.addAttribute("blogId", blogId);
+//		return "blog/blog-main";
+//	}
+//	
+//	@RequestMapping(value = "/{categoryNo}")
+//	public String blogMain(
+//			@PathVariable("blogId") String blogId,
+//			@PathVariable("categoryNo") Long categoryNo,
+//			Model model) {
+//		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
+//		model.addAttribute("categoryList", blogService.getCategoryList(blogId));	// 얘도 이동해야할듯
+//		model.addAttribute("postList", blogService.getCategoryPostList(blogId, categoryNo));
+//		model.addAttribute("post", blogService.getRecentPost(blogId, categoryNo));
+//		model.addAttribute("blogId", blogId);
+//		
+//		return "blog/blog-main";
+//	}
 	
-	@RequestMapping(value = "/{blogId}/{categoryNo}")
+	@RequestMapping(value = {"", "/{pathNo1}", "/{pathNo1}/{pathNo2}"}, method = RequestMethod.GET)
 	public String blogMain(
 			@PathVariable("blogId") String blogId,
-			@PathVariable("categoryNo") Long categoryNo,
+			@PathVariable("pathNo1") Optional<Long> pathNo1,
+			@PathVariable("pathNo2") Optional<Long> pathNo2,
 			Model model) {
-		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
-		model.addAttribute("categoryList", blogService.getCategoryList(blogId));	// 얘도 이동해야할듯
-		model.addAttribute("postList", blogService.getCategoryPostList(blogId, categoryNo));
-		model.addAttribute("post", blogService.getRecentPost(blogId, categoryNo));
-		model.addAttribute("blogId", blogId);
 		
-		return "blog/blog-main";
-	}
-	
-	@RequestMapping(value = "/{blogId}/{categoryNo}/{postNo}")
-	public String blogMain(
-			@PathVariable("blogId") String blogId,
-			@PathVariable("categoryNo") Long categoryNo,
-			@PathVariable("postNo") Long postNo,
-			Model model) {
+		Long categoryNo = 0L;
+		Long postNo = 0L;
+		
+		
+		if (pathNo2.isPresent()) {
+			categoryNo = pathNo1.get();
+			postNo = pathNo2.get();
+		} else if (pathNo1.isPresent()) {
+			categoryNo = pathNo1.get();
+		}
+		
 		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
 		model.addAttribute("categoryList", blogService.getCategoryList(blogId));	// 얘도 이동해야할듯
-		model.addAttribute("postList", blogService.getCategoryPostList(blogId, categoryNo));
-		model.addAttribute("post", blogService.getPost(postNo));
+		
+		model.addAttribute("postList", blogService.getPostList(blogId, categoryNo));
+		model.addAttribute("post", blogService.getPost(blogId, categoryNo, postNo));
+		
 		model.addAttribute("blogId", blogId);
 		
 		return "blog/blog-main";
 	}
 
-	@RequestMapping(value = { "/{blogId}/admin", "/{blogId}/admin/basic" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/admin", "/admin/basic" }, method = RequestMethod.GET)
 	public String blogAdmin(@PathVariable("blogId") String blogId, Model model) {
 		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
 
 		return "blog/blog-admin-basic";
 	}
 
-	@RequestMapping(value = "/{blogId}/admin/category", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/category", method = RequestMethod.GET)
 	public String blogCategory(@PathVariable("blogId") String blogId, Model model) {
 		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
 
@@ -79,14 +95,14 @@ public class BlogController {
 
 		Map<Long, Object> postCount = new HashMap<>();
 		for (CategoryVo category : categoryList) {
-			postCount.put(category.getNo(), blogService.getCategoryPostList(blogId, category.getNo()).size());
+			postCount.put(category.getNo(), blogService.getPostList(blogId, category.getNo()).size());
 		}
 		model.addAttribute("postCount", postCount);
 
 		return "blog/blog-admin-category";
 	}
 
-	@RequestMapping(value = "/{blogId}/admin/category/add", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/category/add", method = RequestMethod.POST)
 	public String blogCategoryAdd(@PathVariable("blogId") String blogId, CategoryVo categoryVo) {
 		categoryVo.setBlogId(blogId);
 		if (blogService.addCategory(categoryVo)) {
@@ -96,7 +112,7 @@ public class BlogController {
 		return "redirect:/" + blogId + "/admin/category";
 	}
 
-	@RequestMapping(value = "/{blogId}/admin/write", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/write", method = RequestMethod.GET)
 	public String blogWrite(@PathVariable("blogId") String blogId, Model model) {
 		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
 		model.addAttribute("categoryList", blogService.getCategoryList(blogId));
@@ -104,7 +120,7 @@ public class BlogController {
 		return "blog/blog-admin-write";
 	}
 
-	@RequestMapping(value = "/{blogId}/admin/write", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/write", method = RequestMethod.POST)
 	public String blogWrite(@PathVariable("blogId") String blogId, PostVo postVo) {
 		if (blogService.writePost(postVo)) {
 			

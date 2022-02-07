@@ -23,20 +23,27 @@ public class BlogService {
 		return blogRepository.findCategory(blogId);
 	}
 
-	public List<PostVo> getAllPostList(String blogId) {
-		return blogRepository.findAllPost(blogId);
+	public List<PostVo> getPostList(String blogId, Long categoryNo) {
+		List<PostVo> postList = null;
+		if (categoryNo == 0) {
+			postList = blogRepository.findAllPost(blogId);
+		} else {
+			postList = blogRepository.findCategoryPostList(blogId, categoryNo);
+		}		
+		return postList;
 	}
 
-	public PostVo getPost(Long postNo) {
-		return blogRepository.findPost(postNo);
-	}
-
-	public PostVo getRecentPost(String blogId) {
-		return blogRepository.findRecentPost(blogId);
-	}
-
-	public PostVo getRecentPost(String blogId, Long categoryNo) {
-		return blogRepository.findRecentPost(blogId, categoryNo);
+	public PostVo getPost(String blogId, Long categoryNo, Long postNo) {
+		PostVo postVo = null;
+		if (categoryNo == 0) {
+			postVo = blogRepository.findRecentPost(blogId);
+		} else if (postNo == 0) {
+			postVo = blogRepository.findRecentPost(blogId, categoryNo);
+		} else {
+			postVo = blogRepository.findPost(blogId, categoryNo, postNo);
+		}
+		
+		return postVo;
 	}
 
 	public boolean createBlog(String userId) {
@@ -51,12 +58,10 @@ public class BlogService {
 		return 1 == blogRepository.insertCategory(categoryVo);
 	}
 
-	public List<PostVo> getCategoryPostList(String blogId, Long categoryNo) {
-		return blogRepository.findCategoryPostList(blogId, categoryNo);
-	}
-
 	public boolean writePost(PostVo postVo) {
 		return 1 == blogRepository.insertPost(postVo);
 	}
+
+
 
 }

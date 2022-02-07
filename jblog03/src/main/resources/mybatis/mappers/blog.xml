@@ -42,15 +42,17 @@
 	]]>
 	</select>
 
-	<select id="findPost" parameterType="long"
+	<select id="findPost" parameterType="map"
 		resultType="postvo">
 	<![CDATA[
 		SELECT 
 		    p.no, p.title, p.content
 		FROM
-		    post p
+		    category c
+		        JOIN
+		    post p ON c.no = p.category_no
 		WHERE
-		    p.no = #{postNo }
+		    c.blog_id = #{blogId } AND p.category_no = #{categoryNo } AND p.no = #{postNo }
 	]]>
 	</select>
 	
