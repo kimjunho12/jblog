@@ -23,34 +23,7 @@ public class BlogController {
 	@Autowired
 	private BlogService blogService;
 
-//	@RequestMapping(value = "", method = RequestMethod.GET)
-//	public String blogMain(@PathVariable("blogId") String blogId, Model model) {
-//		if (blogService.getBlog(blogId) == null) {
-//			return "redirect:/";
-//		}
-//		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
-//		model.addAttribute("categoryList", blogService.getCategoryList(blogId));	// 얘도 이동해야할듯
-//		model.addAttribute("postList", blogService.getAllPostList(blogId));
-//		model.addAttribute("post", blogService.getRecentPost(blogId));
-//		model.addAttribute("blogId", blogId);
-//		return "blog/blog-main";
-//	}
-//	
-//	@RequestMapping(value = "/{categoryNo}")
-//	public String blogMain(
-//			@PathVariable("blogId") String blogId,
-//			@PathVariable("categoryNo") Long categoryNo,
-//			Model model) {
-//		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
-//		model.addAttribute("categoryList", blogService.getCategoryList(blogId));	// 얘도 이동해야할듯
-//		model.addAttribute("postList", blogService.getCategoryPostList(blogId, categoryNo));
-//		model.addAttribute("post", blogService.getRecentPost(blogId, categoryNo));
-//		model.addAttribute("blogId", blogId);
-//		
-//		return "blog/blog-main";
-//	}
-	
-	@RequestMapping(value = {"", "/{pathNo1}", "/{pathNo1}/{pathNo2}"}, method = RequestMethod.GET)
+	@RequestMapping(value = { "", "/{pathNo1}", "/{pathNo1}/{pathNo2}" })
 	public String blogMain(
 			@PathVariable("blogId") String blogId,
 			@PathVariable("pathNo1") Optional<Long> pathNo1,
@@ -60,22 +33,21 @@ public class BlogController {
 		Long categoryNo = 0L;
 		Long postNo = 0L;
 		
-		
 		if (pathNo2.isPresent()) {
 			categoryNo = pathNo1.get();
 			postNo = pathNo2.get();
 		} else if (pathNo1.isPresent()) {
 			categoryNo = pathNo1.get();
 		}
-		
+
 		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
-		model.addAttribute("categoryList", blogService.getCategoryList(blogId));	// 얘도 이동해야할듯
-		
+		model.addAttribute("categoryList", blogService.getCategoryList(blogId)); // 얘도 이동해야할듯
+
 		model.addAttribute("postList", blogService.getPostList(blogId, categoryNo));
 		model.addAttribute("post", blogService.getPost(blogId, categoryNo, postNo));
-		
+
 		model.addAttribute("blogId", blogId);
-		
+
 		return "blog/blog-main";
 	}
 
@@ -111,6 +83,15 @@ public class BlogController {
 
 		return "redirect:/" + blogId + "/admin/category";
 	}
+	
+	@RequestMapping(value = "/admin/category/delete/{categoryNo}", method = RequestMethod.GET)
+	public String blogCategoryDelete(@PathVariable("blogId") String blogId, @PathVariable("categoryNo") Long categoryNo) {
+		if (blogService.deleteCategory(categoryNo)) {
+			
+		}
+		
+		return "redirect:/" + blogId + "/admin/category";
+	}
 
 	@RequestMapping(value = "/admin/write", method = RequestMethod.GET)
 	public String blogWrite(@PathVariable("blogId") String blogId, Model model) {
@@ -123,7 +104,7 @@ public class BlogController {
 	@RequestMapping(value = "/admin/write", method = RequestMethod.POST)
 	public String blogWrite(@PathVariable("blogId") String blogId, PostVo postVo) {
 		if (blogService.writePost(postVo)) {
-			
+
 		}
 		return "redirect:/" + blogId;
 

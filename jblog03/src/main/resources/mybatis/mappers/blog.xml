@@ -14,7 +14,6 @@
 	]]>
 	</select>
 
-
 	<select id="findCategory" parameterType="string"
 		resultType="categoryvo">
 	<![CDATA[	
@@ -42,8 +41,22 @@
 	]]>
 	</select>
 
-	<select id="findPost" parameterType="map"
+	<select id="findCategoryPostList" parameterType="map"
 		resultType="postvo">
+	<![CDATA[
+		SELECT 
+		    p.no, p.title, p.reg_date regDate, p.category_no categoryNo
+		FROM
+		    category c
+		        JOIN
+		    post p ON c.no = p.category_no
+		WHERE
+		    c.blog_id = #{blogId } AND p.category_no =#{categoryNo }
+		ORDER BY p.reg_date DESC
+	]]>
+	</select>
+
+	<select id="findPost" parameterType="map" resultType="postvo">
 	<![CDATA[
 		SELECT 
 		    p.no, p.title, p.content
@@ -55,7 +68,7 @@
 		    c.blog_id = #{blogId } AND p.category_no = #{categoryNo } AND p.no = #{postNo }
 	]]>
 	</select>
-	
+
 	<select id="findRecentPost" parameterType="string"
 		resultType="postvo">
 	<![CDATA[
@@ -105,21 +118,12 @@
 		INSERT INTO category VALUES(null, #{name }, #{description }, #{blogId })
 	]]>
 	</insert>
-
-	<select id="findCategoryPostList" parameterType="map"
-		resultType="postvo">
+	
+	<delete id="deleteCategory" parameterType="long">
 	<![CDATA[
-		SELECT 
-		    p.no, p.title, p.reg_date regDate, p.category_no categoryNo
-		FROM
-		    category c
-		        JOIN
-		    post p ON c.no = p.category_no
-		WHERE
-		    c.blog_id = #{blogId } AND p.category_no =#{categoryNo }
-		ORDER BY p.reg_date DESC
+		DELETE FROM category WHERE no = #{categoryNo }
 	]]>
-	</select>
+	</delete>
 
 	<insert id="insertPost" parameterType="categoryvo">
 	<![CDATA[

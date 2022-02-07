@@ -29,7 +29,7 @@ public class BlogService {
 			postList = blogRepository.findAllPost(blogId);
 		} else {
 			postList = blogRepository.findCategoryPostList(blogId, categoryNo);
-		}		
+		}
 		return postList;
 	}
 
@@ -42,7 +42,7 @@ public class BlogService {
 		} else {
 			postVo = blogRepository.findPost(blogId, categoryNo, postNo);
 		}
-		
+
 		return postVo;
 	}
 
@@ -58,10 +58,12 @@ public class BlogService {
 		return 1 == blogRepository.insertCategory(categoryVo);
 	}
 
+	public boolean deleteCategory(Long categoryNo) {
+		return 1 == blogRepository.deleteCategory(categoryNo);
+	}
+
 	public boolean writePost(PostVo postVo) {
 		return 1 == blogRepository.insertPost(postVo);
 	}
-
-
 
 }

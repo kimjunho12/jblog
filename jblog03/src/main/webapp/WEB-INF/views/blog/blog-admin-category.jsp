@@ -33,7 +33,11 @@
 						<td>${category.name }</td>
 						<td>${postCount[category.no] }</td>
 						<td>${category.description }</td>
-						<td><a href="${pageContext.request.contextPath}/${blogId }/admin/category/delete/${category.no }"><img src="${pageContext.request.contextPath}/assets/images/delete.jpg"></a></td>
+						<td>
+						<c:if test="${postCount[category.no] <= 0 }">
+							<a href="${pageContext.request.contextPath}/${blogId }/admin/category/delete/${category.no }"><img src="${pageContext.request.contextPath}/assets/images/delete.jpg"></a>
+						</c:if>
+						</td>
 					</tr>  		      		
 		      		</c:forEach>					  
 				</table>

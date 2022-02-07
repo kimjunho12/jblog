@@ -29,6 +29,12 @@ public class BlogRepository {
 		return sqlSession.selectList("blog.findAllPost", blogId);
 	}
 
+	public List<PostVo> findCategoryPostList(String blogId, Long categoryNo) {
+		Map<String, Object> param = new HashMap<>();
+		param.put("blogId", blogId);
+		param.put("categoryNo", categoryNo);
+		return sqlSession.selectList("blog.findCategoryPostList", param);
+	}
 
 	public PostVo findRecentPost(String blogId) {
 		return sqlSession.selectOne("blog.findRecentPost", blogId);
@@ -40,7 +46,7 @@ public class BlogRepository {
 		param.put("categoryNo", categoryNo);
 		return sqlSession.selectOne("blog.findCategoryRecentPost", param);
 	}
-	
+
 	public PostVo findPost(String blogId, Long categoryNo, Long postNo) {
 		Map<String, Object> param = new HashMap<>();
 		param.put("blogId", blogId);
@@ -61,11 +67,8 @@ public class BlogRepository {
 		return sqlSession.insert("blog.insertCategory", categoryVo);
 	}
 
-	public List<PostVo> findCategoryPostList(String blogId, Long categoryNo) {
-		Map<String, Object> param = new HashMap<>();
-		param.put("blogId", blogId);
-		param.put("categoryNo", categoryNo);
-		return sqlSession.selectList("blog.findCategoryPostList", param);
+	public int deleteCategory(Long categoryNo) {
+		return sqlSession.delete("blog.deleteCategory", categoryNo);
 	}
 
 	public int insertPost(PostVo postVo) {
