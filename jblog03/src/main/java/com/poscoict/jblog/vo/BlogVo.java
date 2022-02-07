@@ -1,7 +1,10 @@
 package com.poscoict.jblog.vo;
 
+import javax.validation.constraints.NotEmpty;
+
 public class BlogVo {
 	private String userId;
+	@NotEmpty
 	private String title;
 	private String logo;
 

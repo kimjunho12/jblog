@@ -75,4 +75,8 @@ public class BlogRepository {
 		return sqlSession.insert("blog.insertPost", postVo);
 	}
 
+	public int updateBlog(BlogVo blogVo) {
+		return sqlSession.update("blog.updateBlog", blogVo);
+	}
+
 }

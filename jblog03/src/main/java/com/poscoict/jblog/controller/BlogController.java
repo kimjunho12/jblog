@@ -11,8 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.poscoict.jblog.service.BlogService;
+import com.poscoict.jblog.service.FileUploadService;
+import com.poscoict.jblog.vo.BlogVo;
 import com.poscoict.jblog.vo.CategoryVo;
 import com.poscoict.jblog.vo.PostVo;
 
@@ -22,6 +26,9 @@ public class BlogController {
 
 	@Autowired
 	private BlogService blogService;
+	
+	@Autowired
+	private FileUploadService fileUploadService;
 
 	@RequestMapping(value = { "", "/{pathNo1}", "/{pathNo1}/{pathNo2}" })
 	public String blogMain(
@@ -56,6 +63,22 @@ public class BlogController {
 		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
 
 		return "blog/blog-admin-basic";
+	}
+	
+	@RequestMapping(value = "/admin/basic/update", method = RequestMethod.POST)
+	public String blogAdmin(
+			@PathVariable("blogId") String blogId,
+			@RequestParam(value = "logo-file") MultipartFile multipartFile,
+			BlogVo blogVo) {
+		blogVo.setUserId(blogId);
+		String url = fileUploadService.restore(multipartFile);
+		if (url != null) {
+			blogVo.setLogo(url);
+		}
+		if (blogService.updateBlog(blogVo)) {
+			
+		}
+		return "redirect:/" + blogId + "/admin/basic";
 	}
 
 	@RequestMapping(value = "/admin/category", method = RequestMethod.GET)

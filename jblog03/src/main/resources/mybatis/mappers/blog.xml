@@ -131,57 +131,11 @@
 	]]>
 	</insert>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	<select id="findByNo" parameterType="long" resultType="uservo">
+	<update id="updateBlog" parameterType="blogvo">
 	<![CDATA[
-		SELECT name, email, gender FROM user WHERE no=#{no }
+		UPDATE blog SET title = #{title }, logo = #{logo }
+		WHERE user_id = #{userId }
 	]]>
-	</select>
-
-	<update id="update" parameterType="uservo">
-		<choose>
-			<!-- uservo의 field(password)를 통해 분기 -->
-			<when test="password == null or password == ''">
-			<![CDATA[	
-			UPDATE user SET name=#{name }, gender=#{gender } WHERE no=#{no }
-			]]>
-			</when>
-			<otherwise>
-			<![CDATA[
-			UPDATE user SET name=#{name }, gender=#{gender }, password=#{password } WHERE no=#{no }
-			]]>
-			</otherwise>
-		</choose>
 	</update>
 
-	<update id="update2" parameterType="uservo">
-			<![CDATA[	
-			UPDATE user
-				SET name=#{name }, gender=#{gender }
-			]]>
-		<if test="password == null or password == ''">
-			, password=#{password }
-		</if>			
-			<![CDATA[	
-			WHERE no=#{no }"
-			]]>
-	</update>
 </mapper>

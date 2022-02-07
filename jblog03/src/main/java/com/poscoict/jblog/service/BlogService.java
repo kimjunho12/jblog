@@ -66,4 +66,8 @@ public class BlogService {
 		return 1 == blogRepository.insertPost(postVo);
 	}
 
+	public boolean updateBlog(BlogVo blogVo) {
+		return 1 == blogRepository.updateBlog(blogVo);
+	}
+
 }
