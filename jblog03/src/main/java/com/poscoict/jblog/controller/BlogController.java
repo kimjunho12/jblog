@@ -31,7 +31,7 @@ public class BlogController {
 	@Autowired
 	private FileUploadService fileUploadService;
 
-	@RequestMapping(value = { "", "/{pathNo1}", "/{pathNo1}/{pathNo2}" })
+	@RequestMapping(value = { "", "/{pathNo1:^[0-9]+$}", "/{pathNo1:^[0-9]+$/{pathNo2:^[0-9]+$" })
 	public String blogMain(
 			@PathVariable("blogId") String blogId,
 			@PathVariable("pathNo1") Optional<Long> pathNo1,
@@ -52,7 +52,6 @@ public class BlogController {
 
 		model.addAttribute("postList", blogService.getPostList(blogId, categoryNo));
 		model.addAttribute("post", blogService.getPost(blogId, categoryNo, postNo));
-
 
 		return "blog/blog-main";
 	}

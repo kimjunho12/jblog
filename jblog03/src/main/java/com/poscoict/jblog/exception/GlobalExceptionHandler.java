@@ -24,6 +24,6 @@ public class GlobalExceptionHandler {
 
 		// 2. 사과 페이지 (HTML 응답, 정상 종료)
 		model.addAttribute("exception", errors.toString());
-		return "error/exception";
+		return "error/500";
 	}
 }
