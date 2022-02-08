@@ -1,6 +1,5 @@
 package com.poscoict.jblog.exception;
 
-import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import org.apache.commons.logging.Log;
@@ -19,7 +18,6 @@ public class GlobalExceptionHandler {
 		// 1. 로깅
 //		String errors = e.toString();
 		StringWriter errors = new StringWriter();
-		e.printStackTrace(new PrintWriter(errors));
 		LOGGER.error(errors.toString());
 
 		// 2. 사과 페이지 (HTML 응답, 정상 종료)
