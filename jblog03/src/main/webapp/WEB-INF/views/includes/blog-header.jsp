@@ -12,6 +12,9 @@
 		<c:if test="${authUser ne null }">
 		<li><a href="${pageContext.request.contextPath}/user/logout">로그아웃</a></li>
 		</c:if>
+		<c:if test="${authUser ne null }">
+		<li><a href="${pageContext.request.contextPath}/${authUser.id }">내 블로그</a></li>
+		</c:if>
 		<c:if test="${authUser.id eq blogId }">
 		<li><a href="${pageContext.request.contextPath}/${blogId }/admin">블로그 관리</a></li>
 		</c:if>

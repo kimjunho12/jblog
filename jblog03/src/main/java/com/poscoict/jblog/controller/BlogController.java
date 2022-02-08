@@ -48,13 +48,11 @@ public class BlogController {
 			categoryNo = pathNo1.get();
 		}
 
-		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
 		model.addAttribute("categoryList", blogService.getCategoryList(blogId)); // 얘도 이동해야할듯
 
 		model.addAttribute("postList", blogService.getPostList(blogId, categoryNo));
 		model.addAttribute("post", blogService.getPost(blogId, categoryNo, postNo));
 
-		model.addAttribute("blogId", blogId);
 
 		return "blog/blog-main";
 	}
@@ -62,7 +60,6 @@ public class BlogController {
 	@Auth
 	@RequestMapping(value = { "/admin", "/admin/basic" }, method = RequestMethod.GET)
 	public String blogAdmin(@PathVariable("blogId") String blogId, Model model) {
-		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
 
 		return "blog/blog-admin-basic";
 	}
@@ -87,7 +84,6 @@ public class BlogController {
 	@Auth
 	@RequestMapping(value = "/admin/category", method = RequestMethod.GET)
 	public String blogCategory(@PathVariable("blogId") String blogId, Model model) {
-		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
 
 		List<CategoryVo> categoryList = blogService.getCategoryList(blogId);
 		model.addAttribute("categoryList", categoryList);
@@ -125,7 +121,6 @@ public class BlogController {
 	@Auth
 	@RequestMapping(value = "/admin/write", method = RequestMethod.GET)
 	public String blogWrite(@PathVariable("blogId") String blogId, Model model) {
-		model.addAttribute("blogVo", blogService.getBlog(blogId)); // 추후 인터셉터로 이동
 		model.addAttribute("categoryList", blogService.getCategoryList(blogId));
 
 		return "blog/blog-admin-write";
@@ -137,8 +132,8 @@ public class BlogController {
 		if (blogService.writePost(postVo)) {
 
 		}
+		
 		return "redirect:/" + blogId;
-
 	}
 
 }

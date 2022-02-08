@@ -27,7 +27,6 @@ public class FileUploadService {
 			String originFileName = multipartFile.getOriginalFilename();
 			String extName = originFileName.substring(originFileName.indexOf('.') + 1);
 			String saveFileName = generateSaveFileName(extName);
-			Long fileSize = multipartFile.getSize();
 
 			byte[] data = multipartFile.getBytes();
 			OutputStream os = new FileOutputStream(SAVE_PATH + "/" + saveFileName);
