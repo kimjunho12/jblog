@@ -60,7 +60,8 @@ public class SecurityConfig extends WebMvcConfigurerAdapter {
 			.addPathPatterns("/**")
 			.excludePathPatterns("/user/auth")
 			.excludePathPatterns("/user/logout")
-			.excludePathPatterns("/assets/**");
+			.excludePathPatterns("/assets/**")
+			.excludePathPatterns("/images/**");
 	}
 
 }
