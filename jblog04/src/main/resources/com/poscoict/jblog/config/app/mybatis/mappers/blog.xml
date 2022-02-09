@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blog">	<!-- 구별을 위한 id상위(prefix) 개념 -->
+
+	<select id="findBlog" parameterType="string" resultType="blogvo">
+	<![CDATA[
+		SELECT 
+		    title, logo, user_id userId
+		FROM
+		    blog
+		WHERE
+		    user_id = #{blogId }
+	]]>
+	</select>
+
+	<select id="findCategory" parameterType="string"
+		resultType="categoryvo">
+	<![CDATA[	
+		SELECT 
+    		no, name, description, blog_id blogId
+		FROM
+    		category
+		WHERE
+    		blog_id = #{blogId }
+	]]>
+	</select>
+
+	<select id="findAllPost" parameterType="string"
+		resultType="postvo">
+	<![CDATA[
+		SELECT 
+		    p.no, p.title, p.reg_date regDate, p.category_no categoryNo
+		FROM
+		    category c
+		        JOIN
+		    post p ON c.no = p.category_no
+		WHERE
+		    c.blog_id = #{blogId }
+		ORDER BY p.reg_date DESC
+	]]>
+	</select>
+
+	<select id="findCategoryPostList" parameterType="map"
+		resultType="postvo">
+	<![CDATA[
+		SELECT 
+		    p.no, p.title, p.reg_date regDate, p.category_no categoryNo
+		FROM
+		    category c
+		        JOIN
+		    post p ON c.no = p.category_no
+		WHERE
+		    c.blog_id = #{blogId } AND p.category_no =#{categoryNo }
+		ORDER BY p.reg_date DESC
+	]]>
+	</select>
+
+	<select id="findPost" parameterType="map" resultType="postvo">
+	<![CDATA[
+		SELECT 
+		    p.no, p.title, p.content
+		FROM
+		    category c
+		        JOIN
+		    post p ON c.no = p.category_no
+		WHERE
+		    c.blog_id = #{blogId } AND p.category_no = #{categoryNo } AND p.no = #{postNo }
+	]]>
+	</select>
+
+	<select id="findRecentPost" parameterType="string"
+		resultType="postvo">
+	<![CDATA[
+		SELECT 
+		    p.no, p.title, p.content
+		FROM
+		    category c
+		        JOIN
+		    post p ON c.no = p.category_no
+		WHERE
+		    c.blog_id = #{blogId }
+		ORDER BY p.reg_date DESC
+		LIMIT 1
+	]]>
+	</select>
+
+	<select id="findCategoryRecentPost" parameterType="map"
+		resultType="postvo">
+	<![CDATA[
+		SELECT 
+		    p.no, p.title, p.content
+		FROM
+		    category c
+		        JOIN
+		    post p ON c.no = p.category_no
+		WHERE
+		    c.blog_id = #{blogId } AND p.category_no =#{categoryNo }
+		ORDER BY p.reg_date DESC
+		LIMIT 1
+	]]>
+	</select>
+
+	<insert id="insertBlog" parameterType="string">
+	<![CDATA[
+		INSERT INTO blog VALUES('${_parameter } 님의 블로그', '/images/spring-logo.jpg', #{userId })
+	]]>
+	</insert>
+
+	<insert id="insertDefaultCategory" parameterType="string">
+	<![CDATA[
+		INSERT INTO category VALUES(null, '미분류', '기본 카테고리', #{userId })
+	]]>
+	</insert>
+
+	<insert id="insertCategory" parameterType="categoryvo">
+	<![CDATA[
+		INSERT INTO category VALUES(null, #{name }, #{description }, #{blogId })
+	]]>
+	</insert>
+	
+	<delete id="deleteCategory" parameterType="long">
+	<![CDATA[
+		DELETE FROM category WHERE no = #{categoryNo }
+	]]>
+	</delete>
+
+	<insert id="insertPost" parameterType="categoryvo">
+	<![CDATA[
+		INSERT INTO post VALUES(null, #{title }, #{content }, now(), #{categoryNo })
+	]]>
+	</insert>
+
+	<update id="updateBlog" parameterType="blogvo">
+	<![CDATA[
+		UPDATE blog SET title = #{title }, logo = #{logo }
+		WHERE user_id = #{userId }
+	]]>
+	</update>
+
+</mapper>
