@@ -1,5 +1,6 @@
 package com.poscoict.jblog.config;
 
+import org.apache.commons.fileupload.FileUpload;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +15,7 @@ import com.poscoict.jblog.interceptor.BlogInterceptor;
 @Configuration
 @EnableAspectJAutoProxy
 @ComponentScan({ "com.poscoict.jblog.controller", "com.poscoict.jblog.exception" })
-@Import({})
+@Import({ FileUpload.class })
 public class WebConfig extends WebMvcConfigurerAdapter {
 
 	// Blog Interceptor
