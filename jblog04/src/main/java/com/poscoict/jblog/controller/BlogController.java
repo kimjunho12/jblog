@@ -31,7 +31,7 @@ public class BlogController {
 	@Autowired
 	private FileUploadService fileUploadService;
 
-	@RequestMapping(value = { "", "/{pathNo1:^[0-9]+$}", "/{pathNo1:^[0-9]+$/{pathNo2:^[0-9]+$" })
+	@RequestMapping(value = { "", "/{pathNo1:^[0-9]+$}", "/{pathNo1:^[0-9]+$}/{pathNo2:^[0-9]+$}" })
 	public String blogMain(
 			@PathVariable("blogId") String blogId,
 			@PathVariable("pathNo1") Optional<Long> pathNo1,

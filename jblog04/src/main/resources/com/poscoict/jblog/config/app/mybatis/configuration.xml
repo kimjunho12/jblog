@@ -9,6 +9,6 @@
 	</typeAliases>
 	<mappers>
 		<mapper resource="com/poscoict/jblog/config/app/mybatis/mappers/blog.xml"/>
-		<mapper resource="com/poscoict/jblog/config/app/mybatis/mappers/blog.xml"/>
+		<mapper resource="com/poscoict/jblog/config/app/mybatis/mappers/user.xml"/>
 	</mappers>
 </configuration>
