@@ -45,7 +45,7 @@
 				<version>3.2.1</version>
 				<configuration>
 					<warSourceDirectory>${project.basedir}/src/main/webapp</warSourceDirectory>	<!-- 정적 소스 위치 -->
-					<failOnMissingWebXml>true</failOnMissingWebXml>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -54,5 +54,6 @@
 	<modules>
 		<module>jblog03</module>
 		<module>jblog04</module>
+		<module>jblog05</module>
 	</modules>
 </project>
