@@ -25,8 +25,9 @@
 	 		      	<table class="admin-config">
 			      		<tr>
 			      			<td class="t">블로그 제목</td>
-			      			<td><input type="text" size="40" name="title" value="${blogVo.title }"></td>
-							<form:errors path="title" cssStyle="text-align: left; paading-left: 0px; color: #f00;" />
+			      			<td><input type="text" size="40" name="title" value="${blogVo.title }">
+			      				<br> <form:errors path="title" cssStyle="text-align: left; paading-left: 0px; color: #f00;" />
+			      			</td>
 			      		</tr>
 			      		<tr>
 			      			<td class="t">로고이미지</td>

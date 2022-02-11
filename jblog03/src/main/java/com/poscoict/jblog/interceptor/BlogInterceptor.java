@@ -13,7 +13,7 @@ import com.poscoict.jblog.vo.BlogVo;
 public class BlogInterceptor extends HandlerInterceptorAdapter {
 	@Autowired
 	private BlogService blogService;
-
+	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
@@ -31,6 +31,7 @@ public class BlogInterceptor extends HandlerInterceptorAdapter {
 		}
 		
 		request.setAttribute("blogVo", blogVo);
+		request.setAttribute("title", blogVo.getTitle());
 		request.setAttribute("blogId", blogId);
 		return true;
 	}
