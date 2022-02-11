@@ -31,6 +31,7 @@ public class BlogInterceptor implements HandlerInterceptor {
 		}
 		
 		request.setAttribute("blogVo", blogVo);
+		request.setAttribute("title", blogVo.getTitle());
 		request.setAttribute("blogId", blogId);
 		return true;
 	}
