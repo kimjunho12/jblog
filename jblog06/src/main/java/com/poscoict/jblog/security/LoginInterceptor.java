@@ -5,13 +5,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.poscoict.jblog.service.UserService;
 import com.poscoict.jblog.vo.UserVo;
 
 
-public class LoginInterceptor extends HandlerInterceptorAdapter {
+public class LoginInterceptor implements HandlerInterceptor {
 
 	@Autowired
 	private UserService userService;
@@ -26,17 +26,17 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		if (authUser == null) {
 			request.setAttribute("result", "fail");
 			request.setAttribute("id", id);
-			request.getRequestDispatcher("/WEB-INF/views/user/login.jsp").forward(request, response);			
+			request.getRequestDispatcher("/WEB-INF/views/user/login.jsp").forward(request, response);
 			return false;
 		}
-		
+
 		// session 처리
 		HttpSession session = request.getSession();
 		session.setAttribute("authUser", authUser);
-		response.sendRedirect(request.getContextPath());		
-		
+		response.sendRedirect(request.getContextPath());
+
 		return false;
-		
+
 	}
 
 }

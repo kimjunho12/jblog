@@ -5,12 +5,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.poscoict.jblog.service.BlogService;
 import com.poscoict.jblog.vo.BlogVo;
 
-public class BlogInterceptor extends HandlerInterceptorAdapter {
+public class BlogInterceptor implements HandlerInterceptor {
 	@Autowired
 	private BlogService blogService;
 
